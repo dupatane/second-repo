@@ -1,0 +1,14 @@
+{
+  "Records": [
+    {
+      "s3": {
+        "bucket": {
+          "name": "src-bkt-kd"
+        },
+        "object": {
+          "key": "s3://src-bkt-kd/lion.jpg"
+        }
+      }
+    }
+  ]
+}
