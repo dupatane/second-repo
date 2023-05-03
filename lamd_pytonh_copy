@@ -1,0 +1,24 @@
+import boto3
+import os
+
+source_bucket_name = "src-bkt-kd"
+destination_bucket_name = "dst-bkt-kd"
+
+def lambda_handler(event, context):
+    # create S3 client
+    s3 = boto3.client('s3')
+
+    # get list of objects in source bucket
+    objects = s3.list_objects(Bucket=source_bucket_name)['Contents']
+
+    # loop through objects and copy images to destination bucket
+    for obj in objects:
+        source_key = obj['Key']
+        file_ext = os.path.splitext(source_key)[1].lower()
+        
+        # check if the file is an image
+        if file_ext in ['.jpg', '.jpeg', '.png', '.gif']:
+            destination_key = source_key # keep same key name
+            s3.copy_object(Bucket=destination_bucket_name, CopySource={'Bucket': source_bucket_name, 'Key': source_key}, Key=destination_key)
+
+    print('All images copied successfully!')
